@@ -26,6 +26,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </Link>
 
           <nav className="flex items-center gap-4">
+            <Link to="/users">
+              <Button variant="ghost" size="sm">Users</Button>
+            </Link>
             {isAuthenticated ? (
               <>
                 <span className="text-gray-600 hidden sm:inline">
