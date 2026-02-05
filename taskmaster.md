@@ -1,54 +1,54 @@
 # Taskmaster - DevQ&A Platform Implementation
 
-1. [ ] Bootstrap root tooling and scripts
-   - [ ] Add root package.json scripts per PRD
-   - [ ] Add start-dev.js for Windows-safe dev startup
-   - [ ] Add open-report.js for Playwright reports
+1. [x] Bootstrap root tooling and scripts
+   - [x] Add root package.json scripts per PRD
+   - [x] Add start-dev.js for Windows-safe dev startup
+   - [x] Add open-report.js for Playwright reports
 
-2. [ ] Initialize backend project structure
-   - [ ] Create server/src entrypoints (app.ts, index.ts)
-   - [ ] Add env setup and .env.example
-   - [ ] Configure CORS allowlist and /health endpoint
+2. [x] Initialize backend project structure
+   - [x] Create server/src entrypoints (app.ts, index.ts)
+   - [x] Add env setup and .env.example
+   - [x] Configure CORS allowlist and /health endpoint
 
-3. [ ] Configure Sequelize and Postgres
-   - [ ] Implement server/src/config/database.ts with dev/test DB switching
-   - [ ] Add sync retry for Postgres catalog race
-   - [ ] Wire sequelize.sync() on startup (capstone mode)
+3. [x] Configure Sequelize and Postgres
+   - [x] Implement server/src/config/database.ts with dev/test DB switching
+   - [x] Add sync retry for Postgres catalog race
+   - [x] Wire sequelize.sync() on startup (capstone mode)
 
-4. [ ] Build Sequelize models and associations
-   - [ ] Define users, questions, answers, votes models
-   - [ ] Map FK fields to snake_case via field option
-   - [ ] Enforce unique constraint on (answer_id, user_id)
+4. [x] Build Sequelize models and associations
+   - [x] Define users, questions, answers, votes models
+   - [x] Map FK fields to snake_case via field option
+   - [x] Enforce unique constraint on (answer_id, user_id)
 
-5. [ ] Implement auth flow
-   - [ ] Add JWT issuance on login with 1h expiry
-   - [ ] Add register and verify endpoints per PRD
-   - [ ] Add auth middleware attaching req.user
+5. [x] Implement auth flow
+   - [x] Add JWT issuance on login with 1h expiry
+   - [x] Add register and verify endpoints per PRD
+   - [x] Add auth middleware attaching req.user
 
-6. [ ] Implement questions API
-   - [ ] CRUD endpoints for questions
-   - [ ] Pagination with page/limit and max 50
-   - [ ] Ensure error responses use {"error":"..."}
+6. [x] Implement questions API
+   - [x] CRUD endpoints for questions
+   - [x] Pagination with page/limit and max 50
+   - [x] Ensure error responses use {"error":"..."}
 
-7. [ ] Implement answers API
-   - [ ] CRUD endpoints for answers scoped to questions
-   - [ ] Enforce author-only edits/deletes
-   - [ ] Return consistent DTO shapes
+7. [x] Implement answers API
+   - [x] CRUD endpoints for answers scoped to questions
+   - [x] Enforce author-only edits/deletes
+   - [x] Return consistent DTO shapes
 
-8. [ ] Implement voting API
-   - [ ] Add /api/answers/:answerId/vote
-   - [ ] Enforce one vote per user and toggle/switch logic
-   - [ ] Block voting on own answers (403)
+8. [x] Implement voting API
+   - [x] Add /api/answers/:answerId/vote
+   - [x] Enforce one vote per user and toggle/switch logic
+   - [x] Block voting on own answers (403)
 
-9. [ ] Implement users API
-   - [ ] Add /api/users routes
-   - [ ] Return public user data only
-   - [ ] Validate route protections
+9. [x] Implement users API
+   - [x] Add /api/users routes
+   - [x] Return public user data only
+   - [x] Validate route protections
 
-10. [ ] Add backend tests (Vitest + Supertest)
-    - [ ] Configure vitest to run serially
-    - [ ] Add test setup to truncate DB before each test
-    - [ ] Create API tests for auth/questions/answers/votes
+10. [x] Add backend tests (Vitest + Supertest)
+    - [x] Configure vitest to run serially
+    - [x] Add test setup to truncate DB before each test
+   - [x] Create API tests for auth/questions/answers/votes (users + votes done)
 
 11. [ ] Scaffold frontend app
     - [ ] Create Vite React TS app in client/
