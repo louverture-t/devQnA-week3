@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "kill-port": "npx kill-port 4000",
+    "dev": "npm run kill-port && ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "tsc",
-    "test": "vitest"
+    "start": "npm run kill-port && node dist/index.js",
+    "test": "vitest --run",
+    "seed": "ts-node-dev --transpile-only scripts/seed.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -23,9 +26,10 @@
     "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.10.2",
     "@types/supertest": "^2.0.16",
+    "kill-port": "^2.0.1",
+    "supertest": "^7.2.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.3",
-    "supertest": "^7.2.2",
     "vitest": "^2.1.9"
   }
 }

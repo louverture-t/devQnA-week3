@@ -1,6 +1,13 @@
 import { Router } from "express";
 import jwt from "jsonwebtoken";
-import { UniqueConstraintError } from "sequelize";
+import {
+	ConnectionError,
+	ConnectionRefusedError,
+	ConnectionTimedOutError,
+	HostNotFoundError,
+	HostNotReachableError,
+	UniqueConstraintError,
+} from "sequelize";
 
 import { authenticateToken } from "../middleware/auth";
 import { User } from "../models";
@@ -98,6 +105,20 @@ router.post("/login", async (req, res) => {
 
 		res.status(200).json({ token, user: publicUser });
 	} catch (error) {
+		console.error("[devqa] login failed", error);
+
+		const isDbConnectionError =
+			error instanceof ConnectionError ||
+			error instanceof ConnectionRefusedError ||
+			error instanceof ConnectionTimedOutError ||
+			error instanceof HostNotFoundError ||
+			error instanceof HostNotReachableError;
+
+		if (isDbConnectionError && process.env.NODE_ENV !== "production") {
+			res.status(503).json({ error: "Service unavailable" });
+			return;
+		}
+
 		res.status(500).json({ error: "Internal server error" });
 	}
 });
