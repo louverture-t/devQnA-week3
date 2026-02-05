@@ -229,9 +229,9 @@ const QuestionDetail: React.FC = () => {
   if (isLoading) {
     return (
       <Layout>
-        <div className="space-y-6">
-          <Card className="animate-pulse">
-            <CardContent className="p-6">
+        <div className="max-w-4xl mx-auto space-y-6 editorial-fade">
+          <Card className="animate-pulse rounded-3xl">
+            <CardContent className="p-8">
               <div className="h-8 bg-gray-200 rounded w-3/4 mb-4" />
               <div className="h-4 bg-gray-200 rounded w-full mb-2" />
               <div className="h-4 bg-gray-200 rounded w-full mb-2" />
@@ -246,13 +246,18 @@ const QuestionDetail: React.FC = () => {
   if (error && !question) {
     return (
       <Layout>
-        <Alert variant="destructive" data-testid="error-message">
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-        <div className="mt-4">
-          <Link to="/questions">
-            <Button variant="outline">Back to Questions</Button>
-          </Link>
+        <div className="max-w-4xl mx-auto">
+          <Alert variant="destructive" data-testid="error-message">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+          <div className="mt-4">
+            <Link to="/questions">
+              <Button variant="outline" className="rounded-full">
+                <span className="material-icons-outlined text-sm mr-2">arrow_back</span>
+                Back to Questions
+              </Button>
+            </Link>
+          </div>
         </div>
       </Layout>
     );
@@ -261,26 +266,34 @@ const QuestionDetail: React.FC = () => {
   if (!question) {
     return (
       <Layout>
-        <Card>
-          <CardContent className="p-12 text-center">
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">Question not found</h2>
-            <Link to="/questions">
-              <Button>Back to Questions</Button>
-            </Link>
-          </CardContent>
-        </Card>
+        <div className="max-w-4xl mx-auto">
+          <Card className="rounded-3xl">
+            <CardContent className="p-12 text-center">
+              <span className="material-icons-outlined text-slate-300 mb-4" style={{ fontSize: '48px' }}>
+                search_off
+              </span>
+              <h2 className="text-xl font-semibold text-gray-800 mb-2 editorial-title">Question not found</h2>
+              <Link to="/questions">
+                <Button className="rounded-full mt-4">Back to Questions</Button>
+              </Link>
+            </CardContent>
+          </Card>
+        </div>
       </Layout>
     );
   }
 
   return (
     <Layout>
-      <div className="space-y-6">
+      <div className="max-w-4xl mx-auto space-y-6 editorial-fade">
         {/* Back link */}
-        <Link to="/questions" className="inline-flex items-center text-gray-600 hover:text-primary-600 transition-colors">
-          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
+        <Link
+          to="/questions"
+          className="inline-flex items-center gap-2 text-slate-500 hover:text-primary-600 transition-colors text-sm font-medium group"
+        >
+          <span className="material-icons-outlined text-lg group-hover:-translate-x-1 transition-transform">
+            arrow_back
+          </span>
           Back to Questions
         </Link>
 
@@ -292,28 +305,30 @@ const QuestionDetail: React.FC = () => {
         )}
 
         {/* Question Card */}
-        <Card>
-          <CardContent className="p-6">
+        <Card className="rounded-3xl border border-white/60 overflow-hidden">
+          <CardContent className="p-8">
             {isEditingQuestion ? (
               /* Edit Question Form */
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="edit-title">Title</Label>
+                  <Label htmlFor="edit-title" className="font-semibold text-gray-700">Title</Label>
                   <Input
                     id="edit-title"
                     value={editTitle}
                     onChange={(e) => setEditTitle(e.target.value)}
                     disabled={isSavingQuestion}
+                    className="rounded-xl"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="edit-body">Body</Label>
+                  <Label htmlFor="edit-body" className="font-semibold text-gray-700">Body</Label>
                   <Textarea
                     id="edit-body"
                     value={editBody}
                     onChange={(e) => setEditBody(e.target.value)}
                     disabled={isSavingQuestion}
                     rows={6}
+                    className="rounded-xl"
                   />
                 </div>
                 {editError && (
@@ -322,10 +337,10 @@ const QuestionDetail: React.FC = () => {
                   </Alert>
                 )}
                 <div className="flex gap-2">
-                  <Button onClick={handleSaveQuestion} disabled={isSavingQuestion}>
-                    {isSavingQuestion ? 'Saving...' : 'Save'}
+                  <Button onClick={handleSaveQuestion} disabled={isSavingQuestion} className="rounded-full">
+                    {isSavingQuestion ? 'Saving...' : 'Save Changes'}
                   </Button>
-                  <Button variant="outline" onClick={cancelEditingQuestion} disabled={isSavingQuestion}>
+                  <Button variant="outline" onClick={cancelEditingQuestion} disabled={isSavingQuestion} className="rounded-full">
                     Cancel
                   </Button>
                 </div>
@@ -333,37 +348,42 @@ const QuestionDetail: React.FC = () => {
             ) : (
               /* Display Question */
               <>
-                <div className="flex justify-between items-start gap-4 mb-4">
-                  <h1 className="text-2xl font-bold text-gray-800">{question.title}</h1>
+                <div className="flex justify-between items-start gap-4 mb-6">
+                  <h1 className="text-2xl md:text-3xl font-bold text-gray-800 editorial-title leading-tight">
+                    {question.title}
+                  </h1>
                   {isQuestionOwner && (
                     <div className="flex gap-2 flex-shrink-0">
-                      <Button variant="outline" size="sm" onClick={startEditingQuestion}>
+                      <Button variant="outline" size="sm" onClick={startEditingQuestion} className="rounded-full">
+                        <span className="material-icons-outlined text-sm mr-1">edit</span>
                         Edit
                       </Button>
-                      <Button variant="destructive" size="sm" onClick={() => setShowDeleteConfirm(true)}>
+                      <Button variant="destructive" size="sm" onClick={() => setShowDeleteConfirm(true)} className="rounded-full">
+                        <span className="material-icons-outlined text-sm mr-1">delete</span>
                         Delete
                       </Button>
                     </div>
                   )}
                 </div>
 
-                <div className="prose max-w-none mb-4">
-                  <p className="text-gray-700 whitespace-pre-wrap">{question.body}</p>
+                <div className="prose max-w-none mb-6">
+                  <p className="text-gray-700 whitespace-pre-wrap leading-relaxed text-[15px]">{question.body}</p>
                 </div>
 
-                <div className="flex items-center gap-4 text-sm text-gray-500 pt-4 border-t">
-                  <span className="flex items-center gap-1">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                    Asked by <span className="font-medium text-gray-700">{question.author?.username || 'Anonymous'}</span>
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    {formatDate(question.createdAt)}
-                  </span>
+                <div className="flex items-center gap-4 text-sm text-slate-500 pt-5 border-t border-slate-200/60">
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-sky-400 to-primary-500 flex items-center justify-center text-[10px] font-bold text-white">
+                      {question.author?.username?.slice(0, 2).toUpperCase() || 'AN'}
+                    </div>
+                    <span className="font-medium text-gray-700">
+                      {question.author?.username || 'Anonymous'}
+                    </span>
+                  </div>
+                  <div className="w-1 h-1 rounded-full bg-slate-400" />
+                  <div className="flex items-center gap-1.5">
+                    <span className="material-icons-outlined text-sm">schedule</span>
+                    <span>{formatDate(question.createdAt)}</span>
+                  </div>
                 </div>
               </>
             )}
@@ -372,20 +392,23 @@ const QuestionDetail: React.FC = () => {
 
         {/* Delete Confirmation Modal */}
         {showDeleteConfirm && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <Card className="w-full max-w-md">
+          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <Card className="w-full max-w-md rounded-3xl editorial-fade border border-white/60">
               <CardHeader>
-                <CardTitle>Delete Question</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <span className="material-icons-outlined text-red-500">warning</span>
+                  Delete Question
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 mb-4">
+                <p className="text-gray-600 mb-6 leading-relaxed">
                   Are you sure you want to delete this question? This will also delete all answers. This action cannot be undone.
                 </p>
                 <div className="flex gap-2 justify-end">
-                  <Button variant="outline" onClick={() => setShowDeleteConfirm(false)} disabled={isDeleting}>
+                  <Button variant="outline" onClick={() => setShowDeleteConfirm(false)} disabled={isDeleting} className="rounded-full">
                     Cancel
                   </Button>
-                  <Button variant="destructive" onClick={handleDeleteQuestion} disabled={isDeleting}>
+                  <Button variant="destructive" onClick={handleDeleteQuestion} disabled={isDeleting} className="rounded-full">
                     {isDeleting ? 'Deleting...' : 'Delete'}
                   </Button>
                 </div>
@@ -396,14 +419,16 @@ const QuestionDetail: React.FC = () => {
 
         {/* Answers Section */}
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-800">
+          <h2 className="text-xl font-semibold text-gray-800 editorial-title flex items-center gap-2">
+            <span className="material-icons-outlined text-primary-500">forum</span>
             {question.answers.length} {question.answers.length === 1 ? 'Answer' : 'Answers'}
           </h2>
 
           {question.answers.length === 0 ? (
-            <Card>
-              <CardContent className="p-6 text-center text-gray-500">
-                No answers yet. Be the first to answer!
+            <Card className="rounded-3xl border border-white/60">
+              <CardContent className="p-8 text-center text-gray-500">
+                <span className="material-icons-outlined text-4xl text-slate-300 mb-3 block">chat_bubble_outline</span>
+                <p>No answers yet. Be the first to answer!</p>
               </CardContent>
             </Card>
           ) : (
@@ -431,9 +456,12 @@ const QuestionDetail: React.FC = () => {
 
         {/* Post Answer Form */}
         {isAuthenticated ? (
-          <Card>
+          <Card className="rounded-3xl border border-white/60">
             <CardHeader>
-              <CardTitle className="text-lg">Your Answer</CardTitle>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <span className="material-icons-outlined text-primary-500">edit_note</span>
+                Your Answer
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmitAnswer} className="space-y-4">
@@ -447,22 +475,26 @@ const QuestionDetail: React.FC = () => {
                   disabled={isSubmittingAnswer}
                   rows={6}
                   aria-label="Your answer"
+                  className="rounded-xl"
                 />
                 {answerError && (
                   <Alert variant="destructive">
                     <AlertDescription>{answerError}</AlertDescription>
                   </Alert>
                 )}
-                <Button type="submit" disabled={isSubmittingAnswer}>
+                <Button type="submit" disabled={isSubmittingAnswer} className="rounded-full">
                   {isSubmittingAnswer ? 'Posting...' : 'Post Answer'}
                 </Button>
               </form>
             </CardContent>
           </Card>
         ) : (
-          <Card>
-            <CardContent className="p-6 text-center text-gray-500">
-              <Link to="/login" className="text-primary-600 hover:underline font-medium">Sign in</Link> to post an answer or vote.
+          <Card className="rounded-3xl border border-white/60">
+            <CardContent className="p-8 text-center">
+              <span className="material-icons-outlined text-4xl text-slate-300 mb-3 block">lock</span>
+              <p className="text-gray-500">
+                <Link to="/login" className="text-primary-600 hover:underline font-semibold">Sign in</Link> to post an answer or vote.
+              </p>
             </CardContent>
           </Card>
         )}
@@ -510,56 +542,52 @@ const AnswerCard: React.FC<AnswerCardProps> = ({
   const voteScore = (answer.upvotes || 0) - (answer.downvotes || 0);
 
   return (
-    <Card>
+    <Card className="rounded-3xl border border-white/60">
       <CardContent className="p-6">
         <div className="flex gap-4">
           {/* Voting */}
-          <div className="flex flex-col items-center gap-1">
+          <div className="flex flex-col items-center gap-0.5">
             {isAuthenticated ? (
               <button
                 onClick={() => onVote('up')}
-                className={`p-1 rounded hover:bg-gray-100 transition-colors ${
-                  answer.userVote === 'up' ? 'text-green-600' : 'text-gray-400'
+                className={`p-1.5 rounded-lg transition-colors ${
+                  answer.userVote === 'up'
+                    ? 'text-green-600 bg-green-50'
+                    : 'text-slate-400 hover:bg-slate-100 hover:text-slate-600'
                 }`}
                 aria-label="Upvote"
               >
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 4l-8 8h5v8h6v-8h5z" />
-                </svg>
+                <span className="material-icons-outlined text-xl">expand_less</span>
               </button>
             ) : (
-              <div className="p-1 text-gray-300">
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 4l-8 8h5v8h6v-8h5z" />
-                </svg>
+              <div className="p-1.5 text-slate-300">
+                <span className="material-icons-outlined text-xl">expand_less</span>
               </div>
             )}
-            <span className={`font-semibold ${voteScore > 0 ? 'text-green-600' : voteScore < 0 ? 'text-red-600' : 'text-gray-600'}`}>
+            <span className={`font-bold text-sm ${voteScore > 0 ? 'text-green-600' : voteScore < 0 ? 'text-red-500' : 'text-slate-500'}`}>
               {voteScore}
             </span>
             {isAuthenticated ? (
               <button
                 onClick={() => onVote('down')}
-                className={`p-1 rounded hover:bg-gray-100 transition-colors ${
-                  answer.userVote === 'down' ? 'text-red-600' : 'text-gray-400'
+                className={`p-1.5 rounded-lg transition-colors ${
+                  answer.userVote === 'down'
+                    ? 'text-red-500 bg-red-50'
+                    : 'text-slate-400 hover:bg-slate-100 hover:text-slate-600'
                 }`}
                 aria-label="Downvote"
               >
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 20l8-8h-5V4H9v8H4z" />
-                </svg>
+                <span className="material-icons-outlined text-xl">expand_more</span>
               </button>
             ) : (
-              <div className="p-1 text-gray-300">
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 20l8-8h-5V4H9v8H4z" />
-                </svg>
+              <div className="p-1.5 text-slate-300">
+                <span className="material-icons-outlined text-xl">expand_more</span>
               </div>
             )}
           </div>
 
           {/* Answer Content */}
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             {isEditing ? (
               <div className="space-y-4">
                 <Textarea
@@ -567,6 +595,7 @@ const AnswerCard: React.FC<AnswerCardProps> = ({
                   onChange={(e) => onEditBodyChange(e.target.value)}
                   disabled={isSaving}
                   rows={4}
+                  className="rounded-xl"
                 />
                 {editError && (
                   <Alert variant="destructive">
@@ -574,38 +603,38 @@ const AnswerCard: React.FC<AnswerCardProps> = ({
                   </Alert>
                 )}
                 <div className="flex gap-2">
-                  <Button size="sm" onClick={onSave} disabled={isSaving}>
-                    {isSaving ? 'Saving...' : 'Save'}
+                  <Button size="sm" onClick={onSave} disabled={isSaving} className="rounded-full">
+                    {isSaving ? 'Saving...' : 'Save Changes'}
                   </Button>
-                  <Button variant="outline" size="sm" onClick={onCancelEdit} disabled={isSaving}>
+                  <Button variant="outline" size="sm" onClick={onCancelEdit} disabled={isSaving} className="rounded-full">
                     Cancel
                   </Button>
                 </div>
               </div>
             ) : (
               <>
-                <p className="text-gray-700 whitespace-pre-wrap mb-4">{answer.body}</p>
+                <p className="text-gray-700 whitespace-pre-wrap mb-4 leading-relaxed text-[15px]">{answer.body}</p>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4 text-sm text-gray-500">
-                    <span className="flex items-center gap-1">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                      </svg>
-                      {answer.author?.username || 'Anonymous'}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      {formatDate(answer.createdAt)}
-                    </span>
+                  <div className="flex items-center gap-4 text-sm text-slate-500">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-amber-400 to-orange-500 flex items-center justify-center text-[9px] font-bold text-white">
+                        {answer.author?.username?.slice(0, 2).toUpperCase() || 'AN'}
+                      </div>
+                      <span className="font-medium text-gray-700">{answer.author?.username || 'Anonymous'}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="material-icons-outlined text-sm">schedule</span>
+                      <span>{formatDate(answer.createdAt)}</span>
+                    </div>
                   </div>
                   {isOwner && (
-                    <div className="flex gap-2">
-                      <Button variant="ghost" size="sm" onClick={onStartEdit}>
+                    <div className="flex gap-1">
+                      <Button variant="ghost" size="sm" onClick={onStartEdit} className="rounded-full text-slate-500 hover:text-primary-600">
+                        <span className="material-icons-outlined text-sm mr-1">edit</span>
                         Edit
                       </Button>
-                      <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-700" onClick={() => setShowDeleteConfirm(true)}>
+                      <Button variant="ghost" size="sm" className="rounded-full text-red-500 hover:text-red-700 hover:bg-red-50" onClick={() => setShowDeleteConfirm(true)}>
+                        <span className="material-icons-outlined text-sm mr-1">delete</span>
                         Delete
                       </Button>
                     </div>
@@ -616,13 +645,13 @@ const AnswerCard: React.FC<AnswerCardProps> = ({
 
             {/* Delete Confirmation */}
             {showDeleteConfirm && (
-              <div className="mt-4 p-4 bg-red-50 rounded-lg border border-red-200">
-                <p className="text-sm text-red-800 mb-2">Delete this answer?</p>
+              <div className="mt-4 p-4 bg-red-50/80 rounded-2xl border border-red-200/60">
+                <p className="text-sm text-red-800 mb-3 font-medium">Delete this answer?</p>
                 <div className="flex gap-2">
-                  <Button size="sm" variant="destructive" onClick={() => { onDelete(); setShowDeleteConfirm(false); }}>
+                  <Button size="sm" variant="destructive" className="rounded-full" onClick={() => { onDelete(); setShowDeleteConfirm(false); }}>
                     Delete
                   </Button>
-                  <Button size="sm" variant="outline" onClick={() => setShowDeleteConfirm(false)}>
+                  <Button size="sm" variant="outline" className="rounded-full" onClick={() => setShowDeleteConfirm(false)}>
                     Cancel
                   </Button>
                 </div>

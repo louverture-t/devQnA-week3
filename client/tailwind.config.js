@@ -25,8 +25,31 @@ export default {
           dark: '#74c0fc',
         },
       },
+      fontFamily: {
+        display: ['Fraunces', 'serif'],
+        body: ['Work Sans', 'sans-serif'],
+      },
+      borderRadius: {
+        '2xl': '1rem',
+        '3xl': '1.5rem',
+      },
       backdropBlur: {
         xs: '2px',
+      },
+      animation: {
+        'gradient-xy': 'gradient-xy 15s ease infinite',
+      },
+      keyframes: {
+        'gradient-xy': {
+          '0%, 100%': {
+            'background-size': '400% 400%',
+            'background-position': 'left center',
+          },
+          '50%': {
+            'background-size': '200% 200%',
+            'background-position': 'right center',
+          },
+        },
       },
     },
   },
