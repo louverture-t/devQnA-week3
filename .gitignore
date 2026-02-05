@@ -3,6 +3,10 @@ node_modules/
 
 # Env
 server/.env
+client/.env
+
+# Claude
+.claude/
 
 # Build output
 server/dist/
