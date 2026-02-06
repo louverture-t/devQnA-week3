@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -101,45 +100,102 @@ const Login: React.FC = () => {
   const isLoading = isSubmitting || authLoading;
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <CardTitle className="text-3xl">Welcome Back</CardTitle>
-          <CardDescription>
-            Sign in to your DevQ&A account
-          </CardDescription>
-        </CardHeader>
-        <form onSubmit={handleSubmit}>
-          <CardContent className="space-y-4">
-            {authError && (
-              <Alert variant="destructive" data-testid="error-message">
-                <AlertDescription>{authError}</AlertDescription>
-              </Alert>
-            )}
+    <div className="login-shell">
+      <div className="login-orb login-orb--blue" />
+      <div className="login-orb login-orb--amber" />
 
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+      <div className="login-card">
+        <div className="text-center">
+          <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/80 shadow-sm">
+            <svg
+              viewBox="0 0 24 24"
+              className="h-7 w-7 text-sky-600"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+            >
+              <path
+                d="M9 7l-4 5 4 5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M15 7l4 5-4 5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+          <h1 className="login-title">Welcome Back</h1>
+          <p className="login-subtitle">Sign in to your DevQ&A account</p>
+        </div>
+
+        <div className="mt-8 grid gap-3">
+          <Button type="button" variant="outline" className="w-full rounded-xl border-slate-200 bg-white/90 text-slate-700 hover:bg-white">
+            Continue with Google
+          </Button>
+          <Button type="button" variant="outline" className="w-full rounded-xl border-slate-200 bg-white/90 text-slate-700 hover:bg-white">
+            Continue with GitHub
+          </Button>
+        </div>
+
+        <div className="my-6 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+          <span className="h-px flex-1 bg-slate-200" />
+          or
+          <span className="h-px flex-1 bg-slate-200" />
+        </div>
+
+        {authError && (
+          <Alert variant="destructive" data-testid="error-message">
+            <AlertDescription>{authError}</AlertDescription>
+          </Alert>
+        )}
+
+        <form onSubmit={handleSubmit} className="mt-4 space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="email">Email Address</Label>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.6">
+                  <path d="M4 6h16v12H4z" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M4 7l8 6 8-6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </span>
               <Input
                 id="email"
                 name="email"
                 type="email"
-                placeholder="john@example.com"
+                placeholder="dkole@example.com"
                 value={formData.email}
                 onChange={handleChange}
                 aria-label="Email"
                 aria-invalid={!!errors.email}
                 aria-describedby={errors.email ? 'email-error' : undefined}
                 disabled={isLoading}
+                className="login-input pl-9"
               />
-              {errors.email && (
-                <p id="email-error" className="text-sm text-red-600">
-                  {errors.email}
-                </p>
-              )}
             </div>
+            {errors.email && (
+              <p id="email-error" className="text-sm text-red-600">
+                {errors.email}
+              </p>
+            )}
+          </div>
 
-            <div className="space-y-2">
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
               <Label htmlFor="password">Password</Label>
+              <a className="text-xs font-semibold text-sky-600 hover:underline" href="#">
+                Forgot password?
+              </a>
+            </div>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.6">
+                  <path d="M7 10V8a5 5 0 0110 0v2" strokeLinecap="round" strokeLinejoin="round" />
+                  <rect x="5" y="10" width="14" height="10" rx="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </span>
               <Input
                 id="password"
                 name="password"
@@ -151,34 +207,40 @@ const Login: React.FC = () => {
                 aria-invalid={!!errors.password}
                 aria-describedby={errors.password ? 'password-error' : undefined}
                 disabled={isLoading}
+                className="login-input pl-9"
               />
-              {errors.password && (
-                <p id="password-error" className="text-sm text-red-600">
-                  {errors.password}
-                </p>
-              )}
             </div>
-          </CardContent>
-          <CardFooter className="flex flex-col gap-4">
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={isLoading}
-            >
-              {isLoading ? 'Signing in...' : 'Sign In'}
-            </Button>
-            <p className="text-sm text-gray-600 text-center">
-              Don't have an account?{' '}
-              <Link
-                to="/register"
-                className="text-primary-600 hover:underline font-medium"
-              >
-                Create one
-              </Link>
-            </p>
-          </CardFooter>
+            {errors.password && (
+              <p id="password-error" className="text-sm text-red-600">
+                {errors.password}
+              </p>
+            )}
+          </div>
+
+          <label className="flex items-center gap-2 text-sm text-slate-500">
+            <input
+              type="checkbox"
+              className="h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500"
+            />
+            Keep me signed in
+          </label>
+
+          <Button
+            type="submit"
+            className="login-button w-full"
+            disabled={isLoading}
+          >
+            {isLoading ? 'Signing in...' : 'Sign In'}
+          </Button>
         </form>
-      </Card>
+
+        <p className="mt-6 text-center text-sm text-slate-500">
+          Don't have an account?{' '}
+          <Link to="/register" className="font-semibold text-sky-600 hover:underline">
+            Create one
+          </Link>
+        </p>
+      </div>
     </div>
   );
 };

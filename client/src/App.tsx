@@ -7,6 +7,7 @@ import Login from '@/pages/Login';
 import Questions from '@/pages/Questions';
 import AskQuestion from '@/pages/AskQuestion';
 import QuestionDetail from '@/pages/QuestionDetail';
+import Users from '@/pages/Users';
 
 const App: React.FC = () => {
   return (
@@ -17,6 +18,7 @@ const App: React.FC = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/questions" element={<Questions />} />
+          <Route path="/users" element={<Users />} />
           <Route
             path="/questions/ask"
             element={

@@ -61,6 +61,6 @@
     - [x] Protect routes with ProtectedRoute
 
 13. [ ] Implement pages and E2E tests
-    - [ ] Build Register, Login, Questions List/Detail, Users pages
-    - [ ] Wire Q&A CRUD and voting UI
+    - [x] Build Register, Login, Questions List/Detail, Users pages
+    - [x] Wire Q&A CRUD and voting UI
     - [ ] Add Playwright tests and selectors per PRD
