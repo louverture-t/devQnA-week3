@@ -7,6 +7,8 @@ const USERS = [
   { username: "dkole", email: "dkole@example.com", password: "m1sieroro" },
   { username: "janedoe", email: "jane@example.com", password: "password123" },
   { username: "bobsmith", email: "bob@example.com", password: "password123" },
+  { username: "alicedev", email: "alice@example.com", password: "alice2026!" },
+  { username: "carlosrx", email: "carlos@example.com", password: "carlos2026!" },
 ];
 
 const QUESTIONS = [
@@ -34,6 +36,21 @@ const QUESTIONS = [
     title: "Best way to structure a Node.js REST API project?",
     body: "I'm starting a new backend project with Express and TypeScript. I want to follow best practices for folder structure, separation of concerns, and testability. What patterns do experienced developers recommend for medium-to-large scale APIs?",
     userIndex: 1,
+  },
+  {
+    title: "How do you manage environment variables securely in production?",
+    body: "I currently use .env files locally with dotenv, but I know that's not ideal for production. What are the best practices for managing secrets and environment variables when deploying Node.js apps? I've heard about vaults, cloud-native secret managers, and CI/CD injection but not sure which approach scales best.",
+    userIndex: 3,
+  },
+  {
+    title: "What's the best approach for database migrations in a team?",
+    body: "Our team uses Sequelize with PostgreSQL. Right now we rely on sync({ alter: true }) in development, but that's causing issues when multiple developers make conflicting model changes. Should we switch to explicit migrations? What tools and workflows do teams use to keep database schemas in sync across environments?",
+    userIndex: 4,
+  },
+  {
+    title: "How to implement rate limiting in an Express API?",
+    body: "I want to protect my API from abuse and brute-force attacks. I've seen express-rate-limit mentioned, but I'm not sure how to configure it properly for different endpoints (e.g., stricter limits on login vs. read-only routes). What's a practical setup that balances security and user experience?",
+    userIndex: 3,
   },
 ];
 
@@ -88,6 +105,36 @@ const ANSWERS = [
     userIndex: 2,
     body: "The most important thing is separating your business logic from Express. Your services should be framework-agnostic — they take plain data and return plain data. This makes testing trivial and lets you swap frameworks later if needed.",
   },
+  {
+    questionIndex: 5,
+    userIndex: 0,
+    body: "For production, never commit .env files. Use your cloud provider's secret manager — AWS Secrets Manager, Azure Key Vault, or GCP Secret Manager. They integrate with your runtime so your app reads secrets from the environment without files on disk.",
+  },
+  {
+    questionIndex: 5,
+    userIndex: 4,
+    body: "A practical middle ground is using your CI/CD pipeline to inject environment variables at deploy time. Store secrets in your CI platform (GitHub Actions secrets, GitLab CI variables) and reference them in your deployment config. For local dev, keep using .env with dotenv.",
+  },
+  {
+    questionIndex: 6,
+    userIndex: 1,
+    body: "Absolutely switch to explicit migrations. Sequelize has a CLI (sequelize-cli) that generates migration files with up() and down() methods. Each migration is versioned and tracked in a SequelizeMeta table. This lets your whole team apply changes in order without conflicts.",
+  },
+  {
+    questionIndex: 6,
+    userIndex: 3,
+    body: "We use Umzug (the engine behind sequelize-cli) directly for more control. Each migration is a TypeScript file, we run them programmatically on app startup in staging, and manually in production. The key is: never alter tables by hand, always go through migrations.",
+  },
+  {
+    questionIndex: 7,
+    userIndex: 0,
+    body: "express-rate-limit is great for basic protection. Here's what I use: a global limiter of 100 requests per 15 minutes for all routes, and a strict limiter of 5 requests per 15 minutes on /api/auth/login. Apply them as middleware: app.use(globalLimiter) and router.post('/login', strictLimiter, handler).",
+  },
+  {
+    questionIndex: 7,
+    userIndex: 2,
+    body: "Don't forget to set up a proper store for rate limiting in production. The default in-memory store won't work with multiple server instances. Use rate-limit-redis or rate-limit-mongo to share state across nodes. Also set the standardHeaders: true option so clients get Retry-After headers.",
+  },
 ];
 
 const VOTES: { answerIndex: number; userIndex: number; type: "up" | "down" }[] = [
@@ -103,6 +150,18 @@ const VOTES: { answerIndex: number; userIndex: number; type: "up" | "down" }[] =
   { answerIndex: 8, userIndex: 1, type: "up" },
   { answerIndex: 8, userIndex: 2, type: "up" },
   { answerIndex: 9, userIndex: 0, type: "up" },
+  { answerIndex: 10, userIndex: 1, type: "up" },
+  { answerIndex: 10, userIndex: 3, type: "up" },
+  { answerIndex: 11, userIndex: 0, type: "up" },
+  { answerIndex: 11, userIndex: 2, type: "up" },
+  { answerIndex: 12, userIndex: 0, type: "up" },
+  { answerIndex: 12, userIndex: 4, type: "up" },
+  { answerIndex: 13, userIndex: 1, type: "up" },
+  { answerIndex: 13, userIndex: 2, type: "up" },
+  { answerIndex: 14, userIndex: 3, type: "up" },
+  { answerIndex: 14, userIndex: 4, type: "up" },
+  { answerIndex: 15, userIndex: 1, type: "up" },
+  { answerIndex: 15, userIndex: 3, type: "up" },
 ];
 
 const main = async (): Promise<void> => {
