@@ -8,6 +8,9 @@ client/.env
 # Claude
 .claude/
 
+# Vite cache
+client/.vite/
+
 # Build output
 server/dist/
 client/dist/
@@ -21,3 +24,6 @@ pnpm-debug.log*
 # OS
 .DS_Store
 Thumbs.db
+taskmaster.md 
+project-structure.md
+PRD.md
