@@ -130,16 +130,7 @@ npm run seed --prefix server
 
 This populates the database with 5 users, 8 questions, 16 answers, and 24 votes for immediate testing.
 
-**Seeded user credentials (all use password `password123`):**
-
-| Username | Email |
-|----------|-------|
-| dkole | dkole@example.com |
-| janedoe | janedoe@example.com |
-| bobsmith | bobsmith@example.com |
-| alicedev | alicedev@example.com |
-| carlosrx | carlosrx@example.com |
-
+**Seeded user credentials 
 ### 8. Run the application
 
 ```bash
@@ -239,30 +230,6 @@ UNIQUE constraint on Vote(answer_id, user_id)  -- one vote per user per answer
 | Question | title: 10-255 chars. body: 20-10,000 chars |
 | Answer | body: 10-10,000 chars |
 | Vote | type: ENUM `up` or `down` |
-
----
-
-## Architecture and Best Practices
-
-- **Layered backend structure.** Models, routes, middleware, and config are separated into dedicated directories. Route files contain controller logic inline for simplicity in a project of this scope.
-
-- **JWT authentication with bcrypt.** Passwords are hashed using bcrypt via a Sequelize `beforeCreate` hook -- plain-text passwords never reach the database. JWTs expire after 1 hour and carry `{ id, username, email }` claims.
-
-- **Singleton database client.** A single Sequelize instance is created in `config/database.ts` and reused across the application. The `syncDatabase()` function includes retry logic to handle PostgreSQL catalog race conditions during schema sync.
-
-- **Vite dev proxy.** The frontend proxies `/api` requests to `http://localhost:4000` during development, eliminating CORS issues without additional configuration.
-
-- **Axios interceptors.** The API client automatically attaches the `Authorization: Bearer` header to every request and redirects to `/login` on 401 responses, clearing stale tokens from localStorage.
-
-- **ProtectedRoute component.** Client-side route guarding redirects unauthenticated users to login and preserves the original destination using React Router's `state.from` pattern.
-
-- **Vote deduplication.** A database-level UNIQUE constraint on `(answer_id, user_id)` prevents duplicate votes. The route handler implements toggle (same vote removes it) and switch (opposite vote changes direction) logic.
-
-- **Pagination with bounds.** Both questions and users endpoints accept `page` and `limit` query parameters, clamped to a maximum of 50 items per page.
-
-- **Consistent error responses.** Every backend error returns `{ "error": "..." }` so the frontend can reliably extract and display error messages.
-
-- **Windows-safe process spawning.** The `start-dev.js` script handles the `spawn EINVAL` issue on Windows when running concurrent npm processes.
 
 ---
 
